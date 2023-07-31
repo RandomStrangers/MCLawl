@@ -140,7 +140,8 @@ namespace MCLawl_.Gui
             }
             else
             {
-                goto talk;
+                sentCmd = s;
+                //goto talk;
             }
 
             try
@@ -162,7 +163,7 @@ namespace MCLawl_.Gui
                 return;
             }
 
-        talk: handleComm("say " + MCLawl.Group.findPerm(LevelPermission.Admin).color + "Console: &f" + s);
+    //    talk: handleComm("say " + MCLawl.Group.findPerm(LevelPermission.Admin).color + "Console: &f" + s);
             handleComm(Console.ReadLine());
         }
 
@@ -181,7 +182,7 @@ namespace MCLawl_.Gui
                 if (wait) { if (!Server.checkUpdates) return; Thread.Sleep(10000); }
                 try
                 {
-                    if (Client.DownloadString("http://www.mclawl.tk/curversion.txt") != Server.Version)
+                    if (Client.DownloadString("https://github.com/RandomStrangers/MCLawl/blob/master/Uploads/Current_version.txt") != Server.Version)
                     {
                         if (Server.autoupdate == true || p != null)
                         {
@@ -243,7 +244,7 @@ namespace MCLawl_.Gui
                                 ConsoleColor prevColor = Console.ForegroundColor;
                                 Console.ForegroundColor = ConsoleColor.Red;
                                 Console.WriteLine("An update was found!");
-                                Console.WriteLine("Update using the file at www.mclawl.tk/MCLawl_.dll and placing it over the top of your current MCLawl_.dll!");
+                                Console.WriteLine("Update using the file at https://github.com/RandomStrangers/MCLawl/raw/master/Uploads/MCLawl_.dll and placing it over the top of your current MCLawl_.dll!");
                                 Console.ForegroundColor = prevColor;
                             }
                         }
@@ -306,7 +307,7 @@ namespace MCLawl_.Gui
                     SW.WriteLine("kill $2");
                     SW.WriteLine("rm MCLawl_.dll.backup");
                     SW.WriteLine("mv MCLawl_.dll MCLawl.dll_.backup");
-                    SW.WriteLine("wget http://mclawl.tk/MCLawl_.dll");
+                    SW.WriteLine("wget https://github.com/RandomStrangers/MCLawl/raw/master/Uploads/MCLawl_.dll");
                     SW.WriteLine("mono MCLawl.exe");
                 }
 
@@ -319,16 +320,16 @@ namespace MCLawl_.Gui
                 if (!oldrevision)
                 {
                     WebClient client = new WebClient();
-                    Server.selectedrevision = client.DownloadString("http://www.mclawl.tk/curversion.txt");
+                    Server.selectedrevision = client.DownloadString("https://github.com/RandomStrangers/MCLawl/blob/master/Uploads/Current_version.txt");
                     client.Dispose();
                 }
                 verscheck = Server.selectedrevision.TrimStart('r');
                 int vers = int.Parse(verscheck.Split('.')[0]);
                 if (oldrevision) { filelocation = ("http://www.mclawl.tk/archives/exe/" + Server.selectedrevision + ".exe"); }
-                if (!oldrevision) { filelocation = ("http://www.mclawl.tk/MCLawl_.dll"); }
+                if (!oldrevision) { filelocation = ("https://github.com/RandomStrangers/MCLawl/raw/master/Uploads/MCLawl_.dll"); }
                 WebClient Client = new WebClient();
                 Client.DownloadFile(filelocation, "MCLawl.new");
-                Client.DownloadFile("http://www.mclawl.tk/changelog.txt", "extra/Changelog.txt");
+                Client.DownloadFile("http://github.com/RandomStrangers/MCLawl/raw/master/Uploads/changelog.txt", "extra/Changelog.txt");
                 foreach (Level l in Server.levels) l.Save();
                 foreach (Player pl in Player.players) pl.save();
 
