@@ -15,7 +15,6 @@
     or implied. See the Licenses for the specific language governing
     permissions and limitations under the Licenses.
  */
-using MCLawl;
 using System;
 using System.IO;
 namespace MCLawl

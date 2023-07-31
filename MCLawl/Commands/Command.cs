@@ -79,7 +79,7 @@ namespace MCLawl
             all.Add(new CmdHide());
             all.Add(new CmdHighlight());
             all.Add(new CmdHollow());
-            all.Add(new CmdHost());
+
             all.Add(new CmdImport());
             all.Add(new CmdImageprint());
             all.Add(new CmdInbox());
@@ -142,7 +142,6 @@ namespace MCLawl
             all.Add(new CmdSave());
             all.Add(new CmdSay());
             all.Add(new CmdSend());
-            all.Add(new CmdServerReport());
             all.Add(new CmdSetRank());
             all.Add(new CmdSetspawn());
             all.Add(new CmdSlap());
@@ -190,7 +189,14 @@ namespace MCLawl
             all.Add(new CmdAwards());
             all.Add(new CmdAwardMod());
             // all.Add(new CmdHeartbeat()); DEBUG COMMAND DO NOT USE
+            // New/added commands:
+            all.Add(new CmdServerInfo());
             all.Add(new CmdCCHeartbeat());
+            all.Add(new CmdPClients());
+            // These commands are broken or outdated:
+            //all.Add(new CmdHost());
+            //all.Add(new CmdServerReport());
+
 
             core.commands = new List<Command>(all.commands);
 

@@ -1,7 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Collections.Generic;
-
+﻿/*
 namespace MCLawl
 {
     public class CmdHost : Command
@@ -24,4 +21,4 @@ namespace MCLawl
             Player.SendMessage(p, "/host - Shows what the host is up to.");
         }
     }
-}
+}*/

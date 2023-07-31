@@ -12,6 +12,8 @@ namespace MCLawl
 {
     public static class Updater
     {
+        public const string BaseURL = "https://github.com/RandomStrangers/MCLawl/blob/master/";
+
         public static void Load(string givenPath)
         {
             if (File.Exists(givenPath))

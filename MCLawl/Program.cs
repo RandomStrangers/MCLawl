@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MCLawl;
+using System;
 using System.IO;
 using System.Net;
 using System.Threading;
@@ -14,7 +15,7 @@ namespace Starter
             if (tries > 4)
             {
                 Console.WriteLine("I'm afraid I can't download the file for some reason!");
-                Console.WriteLine("Go to http://mclawl.tk/MCLawl_.dll yourself and download it, please");
+                Console.WriteLine("Go to" + Server.UploadsURL + "yourself and download it, please");
                 Console.WriteLine("Place it inside my folder, near me, and restart me.");
                 Console.WriteLine("Press any key to close me...");
                 Console.ReadLine();
@@ -31,10 +32,10 @@ namespace Starter
                 Console.WriteLine("This is try number " + tries);
                 Console.WriteLine("You do not have the required DLL!");
                 Console.WriteLine("I'll download it for you. Just wait.");
-                Console.WriteLine("Downloading from http://mclawl.tk/MCLawl_.dll");
+                Console.WriteLine("Downloading from" + Server.UploadsURL + ".");
 
                 WebClient Client = new WebClient();
-                Client.DownloadFile("http://mclawl.tk/MCLawl_.dll", "MCLawl_.dll");
+                Client.DownloadFile("https://github.com/RandomStrangers/MCLawl/raw/master/Uploads/MCLawl_.dll", "MCLawl_.dll");
                 Client.Dispose();
 
                 Console.WriteLine("Finished downloading! Let's try this again, shall we.");

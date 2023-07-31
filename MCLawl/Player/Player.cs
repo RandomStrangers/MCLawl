@@ -27,6 +27,27 @@ namespace MCLawl
 {
     public sealed class Player
     {
+        public string DisplayName;
+        public string truename;
+
+        public PlayerIgnores Ignores = new PlayerIgnores();
+
+        public string FormatNick(string name)
+        {
+            Player target = PlayerInfo.FindExact(name);
+            // TODO: select color from database?
+            if (target != null) return FormatNick(target);
+
+            return Group.GroupIn(name).Color + Server.ToRawUsername(name);
+        }
+        /// <summary> Formats a player's name for displaying in chat. </summary>        
+        public string FormatNick(Player target)
+        {
+            if (Ignores.Nicks) return target.color + target.truename;
+            return target.color + target.DisplayName;
+        }
+        public string appName;
+        public bool cancelcommand = false;
         public static List<Player> players = new List<Player>();
         public static Dictionary<string, string> left = new Dictionary<string, string>();
         public static List<Player> connections = new List<Player>(Server.players);

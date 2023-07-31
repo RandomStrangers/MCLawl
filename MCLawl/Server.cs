@@ -35,6 +35,18 @@ namespace MCLawl
 {
     public class Server
     {
+        public static bool ClassicubeAccountPlus = false;
+
+        public static string ToRawUsername(string name)
+        {
+            if (ClassicubeAccountPlus)
+                return name.RemoveLastPlus();
+            return name;
+        }
+        public static string RestartPath;
+        public static bool SetupFinished, CLIMode;
+        public static string SourceURL = "https://github.com/RandomStrangers/MCLawl/";
+        public static string UploadsURL = "https://github.com/RandomStrangers/MCLawl/tree/master/Uploads";
         public delegate void LogHandler(string message);
         public delegate void HeartBeatHandler();
         public delegate void MessageEventHandler(string message);
@@ -70,8 +82,7 @@ namespace MCLawl
         /// SoftwareName2 and SoftwareNameVersioned2 are for Betacraft heartbeats 
         /// since BetaCraft doesn't allow MCLawl to connect using its default SoftwareName.
         /// </summary>
-        public const string InternalVersion = "67.1.1.1";
-        public static string UpdateVersion { get { return InternalVersion + 0.1; } }
+        public const string InternalVersion = "67.1.1.2";
         public static string Version { get { return InternalVersion; } }
         public static string SoftwareName2 = "MCGalaxy";
         static string fullName2;
@@ -167,7 +178,7 @@ namespace MCLawl
 
         public static bool irc = false;
         public static int ircPort = 6667;
-        public static string ircNick = "MCZall_Minecraft_Bot";
+        public static string ircNick = "MCLawl_Bot";
         public static string ircServer = "irc.esper.net";
         public static string ircChannel = "#changethis";
         public static string ircOpChannel = "#changethistoo";
@@ -199,7 +210,7 @@ namespace MCLawl
         public static bool repeatMessage = true;
 
         public static bool checkUpdates = true;
-
+        //MySQL
         public static bool useMySQL = false;
         public static string MySQLHost = "127.0.0.1";
         public static string MySQLPort = "3306";
@@ -207,6 +218,7 @@ namespace MCLawl
         public static string MySQLPassword = "password";
         public static string MySQLDatabaseName = "MCZallDB";
         public static bool MySQLPooling = false;
+        public static bool DatabasePooling = true;
 
         public static string DefaultColor = "&e";
         public static string IRCColour = "&5";

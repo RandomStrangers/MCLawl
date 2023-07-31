@@ -23,11 +23,15 @@ namespace MCLawl
         public string name;
         public string trueName;
         public string color;
+        public string Color = "&f";
         public LevelPermission Permission;
         public int maxBlocks;
         public CommandList commands;
         public string fileName;
         public PlayerList playerList;
+        public static Group DefaultRank;
+
+        public PlayerList Players;
 
         public Group()
         {
@@ -53,7 +57,14 @@ namespace MCLawl
             GrpCommands.AddCommands(out _commands, Permission);
             commands = _commands;
         }
-
+        public static Group GroupIn(string playerName)
+        {
+            foreach (Group grp in GroupList)
+            {
+                if (grp.Players.Contains(playerName)) return grp;
+            }
+            return DefaultRank;
+        }
         public bool CanExecute(Command cmd) { return commands.Contains(cmd); }
 
         public static List<Group> GroupList = new List<Group>();

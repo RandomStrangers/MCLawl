@@ -44,7 +44,7 @@ namespace MCLawl
     /// <summary>
     /// Temporary class, will replace Logger completely once satisfied
     /// </summary>
-    static class PidgeonLogger
+   public static class PidgeonLogger
     {
         //TODO: Implement report back feature
 
