@@ -22,7 +22,9 @@ using System.Threading;
 using System.Diagnostics;
 using System.Windows.Forms;
 using System.Reflection;
-namespace Starter
+using MCLawl_.Gui;
+
+namespace StarterCLI
 {
     class Program
     {
@@ -31,7 +33,7 @@ namespace Starter
         {
             get
             {
-                return "https://github.com/RandomStrangers/MCForge/raw/master/Uploads/MCLawl_.dll";
+                return "https://github.com/RandomStrangers/MCLawl/raw/master/Uploads/MCLawl_.dll";
             }
         }
         static int tries = 0;
@@ -104,7 +106,7 @@ namespace Starter
         }
         static void openServer(string[] args)
         {
-            MCLawl_.Gui.Program.Main(args);
+            Program2.Main(args);
         }
     }
 }

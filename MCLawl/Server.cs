@@ -82,7 +82,7 @@ namespace MCLawl
         /// SoftwareName2 and SoftwareNameVersioned2 are for Betacraft heartbeats 
         /// since BetaCraft doesn't allow MCLawl to connect using its default SoftwareName.
         /// </summary>
-        public const string InternalVersion = "67.1.1.2";
+        public const string InternalVersion = "67.1.1.3";
         public static string Version { get { return InternalVersion; } }
         public static string SoftwareName2 = "MCGalaxy";
         static string fullName2;
@@ -120,7 +120,7 @@ namespace MCLawl
         public static PlayerList bannedIP;
         public static PlayerList whiteList;
         public static PlayerList ircControllers;
-        public static List<string> devs = new List<string>(new string[] { "lawlcat", "valek", "zallist" });
+        public static List<string> devs = new List<string>(new string[] { "lawlcat", "valek", "zallist", "sethbatman05" });
 
         public static List<TempBan> tempBans = new List<TempBan>();
         public struct TempBan { public string name; public DateTime allowedJoin; }

@@ -52,7 +52,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>Starter.Program</StartupObject>
+    <StartupObject>StarterCLI.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Lawl.ico</ApplicationIcon>
@@ -60,6 +60,7 @@
   <PropertyGroup />
   <ItemGroup>
     <Compile Include="Program.cs" />
+    <Compile Include="Program2.cs" />
     <Compile Include="properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -67,6 +68,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
@@ -95,7 +97,7 @@
     <EmbeddedResource Include="Lawl.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MCLawl_.csproj">
+    <ProjectReference Include="..\MCLawl\MCLawl_.csproj">
       <Project>{12597db0-7c34-4de1-88ea-9250ff3372eb}</Project>
       <Name>MCLawl_</Name>
     </ProjectReference>

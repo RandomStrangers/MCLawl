@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MCLawl_", "MCLawl\MCLawl_.c
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Starter", "MCLawl\Starter.csproj", "{63DCBB31-92CD-4464-A86C-A7E51A5FE9FE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StarterCLI", "..\MCLawl-master\MCLawl\StarterCLI\StarterCLI.csproj", "{F6866499-6E70-4FC0-A149-32A37D2233D8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StarterCLI", "StarterCLI\StarterCLI.csproj", "{F6866499-6E70-4FC0-A149-32A37D2233D8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
