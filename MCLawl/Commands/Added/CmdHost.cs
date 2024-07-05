@@ -22,7 +22,7 @@ namespace MCLawl
         public override string shortcut { get { return "host"; } }
         public override string type { get { return "information"; } }
         public override bool museumUsable { get { return true; } }
-        public override LevelPermission defaultRank { get { return LevelPermission.Admin; } }
+        public override LevelPermission defaultRank { get { return LevelPermission.Guest; } }
         public CmdServerInfo() { }
         public override void Use(Player p, string message)
         {

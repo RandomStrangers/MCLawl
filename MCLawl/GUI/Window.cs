@@ -339,13 +339,7 @@ namespace MCLawl.Gui
         }
 
         private void btnUpdate_Click_1(object sender, EventArgs e) {
-            if (!MCLawl_.Gui.Program.CurrentUpdate)
-                MCLawl_.Gui.Program.UpdateCheck();
-            else {
-                Thread messageThread = new Thread(new ThreadStart(delegate {
-                    MessageBox.Show("Already checking for updates.");
-                })); messageThread.Start();
-            }
+                MCLawlUpdater.Program.Main(null);
         }
 
         public static bool prevLoaded = false;

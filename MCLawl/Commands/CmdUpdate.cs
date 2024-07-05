@@ -24,13 +24,13 @@ namespace MCLawl
         public override string shortcut { get { return ""; } }
         public override string type { get { return "information"; } }
         public override bool museumUsable { get { return true; } }
-        public override LevelPermission defaultRank { get { return LevelPermission.AdvBuilder; } }
+        public override LevelPermission defaultRank { get { return LevelPermission.Owner; } }
         public CmdUpdate() { }
 
         public override void Use(Player p, string message)
         {
-            if (p == null || p.group.Permission > LevelPermission.AdvBuilder) MCLawl_.Gui.Program.UpdateCheck(false, p);
-            else Player.SendMessage(p, "Ask an Operator to do it!");
+            if (p == null || p.group.Permission == LevelPermission.Owner) MCLawlUpdater.Program.Main(null);
+            else Player.SendMessage(p, "Ask the owner to do it!");
         }
         public override void Help(Player p)
         {

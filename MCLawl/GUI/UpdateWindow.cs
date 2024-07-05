@@ -21,9 +21,9 @@ namespace MCLawl.Gui
         }
         private void UpdateWindow_Load(object sender, EventArgs e)
         {
-            UpdLoadProp("properties/update.properties");
-            WebClient client = new WebClient();
-            client.DownloadFile("http://www.mclawl.tk/revs.txt", "text/revs.txt");
+            //UpdLoadProp("properties/update.properties");
+            //WebClient client = new WebClient();
+            //client.DownloadFile("http://www.mclawl.tk/revs.txt", "text/revs.txt");
             listRevisions.Items.Clear();
             FileInfo file = new FileInfo("text/revs.txt");
             StreamReader stRead = file.OpenText();
@@ -37,7 +37,7 @@ namespace MCLawl.Gui
             stRead.Close();
             stRead.Dispose();
             file.Delete();
-            client.Dispose();
+            //client.Dispose();
         }
 
 
@@ -59,7 +59,7 @@ namespace MCLawl.Gui
         }
 
 
-        public void UpdLoadProp(string givenPath)
+        /*public void UpdLoadProp(string givenPath)
         {
             if (File.Exists(givenPath))
             {
@@ -90,7 +90,7 @@ namespace MCLawl.Gui
                 //Save(givenPath);
             }
             //else Save(givenPath);
-        }
+        }*/
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -103,34 +103,20 @@ namespace MCLawl.Gui
             }
             else
             {
-                UpdSave("properties/update.properties");
-                Server.autoupdate = chkAutoUpdate.Checked;
+                //UpdSave("properties/update.properties");
+                //Server.autoupdate = chkAutoUpdate.Checked;
             }
         }
 
         private void cmdDiscard_Click(object sender, EventArgs e)
         {
-            UpdLoadProp("properties/update.properties");
+            //UpdLoadProp("properties/update.properties");
             this.Close();
         }
 
         private void cmdUpdate_Click(object sender, EventArgs e)
         {
-            if (Server.selectedrevision != "")
-            {
-                MCLawl_.Gui.Program.PerformUpdate(true);
-                
-            }
-            else { MCLawl_.Gui.Program.PerformUpdate(false); }
-      /*      if (!Program.CurrentUpdate)
-                Program.UpdateCheck();
-            else
-            {
-                Thread messageThread = new Thread(new ThreadStart(delegate
-                {
-                    MessageBox.Show("Already checking for updates.");
-                })); messageThread.Start();
-            } */
+            MCLawlUpdater.Program.Main(null);
         }
 
 

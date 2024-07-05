@@ -104,14 +104,12 @@ namespace StarterCLI
                     {
                         ShowWindow(hConsole, 0);
                     }
-                    UpdateCheck(true);
                     if (foundView[5].Split(' ')[2].ToLower() == "true")
                     {
                         Application.EnableVisualStyles();
                         Application.SetCompatibleTextRenderingDefault(false);
                     }
 
-                    updateTimer.Elapsed += delegate { UpdateCheck(); }; updateTimer.Start();
 
                     Application.Run(new MCLawl.Gui.Window());
                 }
@@ -135,7 +133,6 @@ namespace StarterCLI
             else
             {
                 sentCmd = s;
-                //goto talk;
             }
 
             try
@@ -158,192 +155,6 @@ namespace StarterCLI
             }
             //   talk: handleComm("say " + MCLawl.Group.findPerm(LevelPermission.Admin).color + "Console: &f" + s);
             handleComm(Console.ReadLine());
-        }
-
-        public static bool CurrentUpdate = false;
-        static bool msgOpen = false;
-        public static System.Timers.Timer updateTimer = new System.Timers.Timer(120 * 60 * 1000);
-
-        public static void UpdateCheck(bool wait = false, Player p = null)
-        {
-
-            CurrentUpdate = true;
-            Thread updateThread = new Thread(new ThreadStart(delegate
-            {
-                WebClient Client = new WebClient();
-
-                if (wait) { if (!Server.checkUpdates) return; Thread.Sleep(10000); }
-                try
-                {
-                    if (Client.DownloadString("https://github.com/RandomStrangers/MCLawl/raw/master/Uploads/Current_version.txt") != Server.Version)
-                    {
-                        if (Server.autoupdate == true || p != null)
-                        {
-                            if (Server.autonotify == true || p != null)
-                            {
-                                if (p != null) Server.restartcountdown = "20";
-                                Player.GlobalMessage("Update found. Prepare for restart in &f" + Server.restartcountdown + Server.DefaultColor + " seconds.");
-                                Server.s.Log("Update found.  Prepare for restart in " + Server.restartcountdown + " seconds.");
-                                double nxtTime = Convert.ToDouble(Server.restartcountdown);
-                                DateTime nextupdate = DateTime.Now.AddMinutes(nxtTime);
-                                int timeLeft = Convert.ToInt32(Server.restartcountdown);
-                                System.Timers.Timer countDown = new System.Timers.Timer();
-                                countDown.Interval = 1000;
-                                countDown.Start();
-                                countDown.Elapsed += delegate
-                                {
-                                    if (Server.autoupdate == true || p != null)
-                                    {
-                                        Player.GlobalMessage("Updating in &f" + timeLeft + Server.DefaultColor + " seconds.");
-                                        Server.s.Log("Updating in " + timeLeft + " seconds.");
-                                        timeLeft = timeLeft - 1;
-                                        if (timeLeft < 0)
-                                        {
-                                            Player.GlobalMessage("---UPDATING SERVER---");
-                                            Server.s.Log("---UPDATING SERVER---");
-                                            countDown.Stop();
-                                            countDown.Dispose();
-                                            PerformUpdate(false);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        Player.GlobalMessage("Stopping auto restart.");
-                                        Server.s.Log("Stopping auto restart.");
-                                        countDown.Stop();
-                                        countDown.Dispose();
-                                    }
-                                };
-                            }
-                            else
-                            {
-                                PerformUpdate(false);
-                            }
-
-                        }
-                        else
-                        {
-                            if (!msgOpen && !usingConsole)
-                            {
-                                msgOpen = true;
-                                if (MessageBox.Show("New version found. Would you like to update?", "Update?", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                                {
-                                    PerformUpdate(false);
-                                }
-                                msgOpen = false;
-                            }
-                            else
-                            {
-                                ConsoleColor prevColor = Console.ForegroundColor;
-                                Console.ForegroundColor = ConsoleColor.Red;
-                                Console.WriteLine("An update was found!");
-                                Console.WriteLine("Update using the file at https://github.com/RandomStrangers/MCLawl/raw/master/Uploads/MCLawl_.dll and placing it over the top of your current MCLawl_.dll!");
-                                Console.ForegroundColor = prevColor;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        Player.SendMessage(p, "No update found!");
-                    }
-                }
-                catch { Server.s.Log("No web server found to update on."); }
-                Client.Dispose();
-                CurrentUpdate = false;
-            })); updateThread.Start();
-        }
-
-        public static void PerformUpdate(bool oldrevision)
-        {
-            try
-            {
-                StreamWriter SW;
-                if (!Server.mono)
-                {
-                    if (!File.Exists("Update.bat"))
-                        SW = new StreamWriter(File.Create("Update.bat"));
-                    else
-                    {
-                        if (File.ReadAllLines("Update.bat")[0] != "::Version 3")
-                        {
-                            SW = new StreamWriter(File.Create("Update.bat"));
-                        }
-                        else
-                        {
-                            SW = new StreamWriter(File.Create("Update_generated.bat"));
-                        }
-                    }
-                    SW.WriteLine("::Version 3");
-                    SW.WriteLine("TASKKILL /pid %2 /F");
-                    SW.WriteLine("if exist MCLawl_.dll.backup (erase MCLawl_.dll.backup)");
-                    SW.WriteLine("if exist MCLawl_.dll (rename MCLawl_.dll MCLawl_.dll.backup)");
-                    SW.WriteLine("if exist MCLawl.new (rename MCLawl.new MCLawl_.dll)");
-                    SW.WriteLine("start MCLawl.exe");
-                }
-                else
-                {
-                    if (!File.Exists("Update.sh"))
-                        SW = new StreamWriter(File.Create("Update.sh"));
-                    else
-                    {
-                        if (File.ReadAllLines("Update.sh")[0] != "#Version 2")
-                        {
-                            SW = new StreamWriter(File.Create("Update.sh"));
-                        }
-                        else
-                        {
-                            SW = new StreamWriter(File.Create("Update_generated.sh"));
-                        }
-                    }
-                    SW.WriteLine("#Version 2");
-                    SW.WriteLine("#!/bin/bash");
-                    SW.WriteLine("kill $2");
-                    SW.WriteLine("rm MCLawl_.dll.backup");
-                    SW.WriteLine("mv MCLawl_.dll MCLawl.dll_.backup");
-                    SW.WriteLine("wget https://github.com/RandomStrangers/MCLawl/raw/master/Uploads/MCLawl_.dll");
-                    SW.WriteLine("mono MCLawl.exe");
-                }
-
-                SW.Flush(); SW.Close(); SW.Dispose();
-
-                string filelocation = "";
-                string verscheck = "";
-                Process proc = Process.GetCurrentProcess();
-                string assemblyname = proc.ProcessName + ".exe";
-                if (!oldrevision)
-                {
-                    WebClient client = new WebClient();
-                    Server.selectedrevision = client.DownloadString("https://github.com/RandomStrangers/MCLawl/raw/master/Uploads/Current_version.txt");
-                    client.Dispose();
-                }
-                verscheck = Server.selectedrevision.TrimStart('r');
-                int vers = int.Parse(verscheck.Split('.')[0]);
-                if (oldrevision) { filelocation = ("https://github.com/RandomStrangers/MCLawl/raw/master/Uploads/MCLawl_.exe"); }
-                if (!oldrevision) { filelocation = ("https://github.com/RandomStrangers/MCLawl/raw/master/Uploads/MCLawl_.dll"); }
-                WebClient Client = new WebClient();
-                Client.DownloadFile(filelocation, "MCLawl.new");
-                Client.DownloadFile("https://github.com/RandomStrangers/MCLawl/raw/master/Uploads/changelog.txt", "extra/Changelog.txt");
-                foreach (Level l in Server.levels) l.Save();
-                foreach (Player pl in Player.players) pl.save();
-
-                string fileName;
-                if (!Server.mono) fileName = "Update.bat";
-                else fileName = "Update.sh";
-
-                try
-                {
-                    if (MCLawl.Gui.Window.thisWindow.notifyIcon1 != null)
-                    {
-                        MCLawl.Gui.Window.thisWindow.notifyIcon1.Icon = null;
-                        MCLawl.Gui.Window.thisWindow.notifyIcon1.Visible = false;
-                    }
-                }
-                catch { }
-
-                Process p = Process.Start(fileName, "main " + System.Diagnostics.Process.GetCurrentProcess().Id.ToString());
-                p.WaitForExit();
-            }
-            catch (Exception e) { Server.ErrorLog(e); }
         }
 
         static public void ExitProgram(Boolean AutoRestart)

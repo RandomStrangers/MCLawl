@@ -128,27 +128,6 @@ namespace MCLawl
         public override void Init()
         {
             base.Init();
-#if MCG_STANDALONE
-            if (!Directory.Exists("certs")) return;
-
-            // by default mono looks in these directories for SSL/TLS certificates:
-            //  - ~/.config/.mono/new-certs/Trust
-            //  - /usr/share/.mono/new-certs/Trust
-            // but that won't work when distributed in a standalone build - so in this case, have to
-            //  modify internal runtime state to make it look elsewhere for certifcates on Linux
-            try
-            {
-                Type settingsType  = Type.GetType("Mono.Security.Interface.MonoTlsSettings, Mono.Security, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756");
-                PropertyInfo defSettingsProp = settingsType.GetProperty("DefaultSettings", BindingFlags.Static | BindingFlags.Public);
-                object defSettings = defSettingsProp.GetValue(null, null);
-
-                Type settingsObjType   = defSettings.GetType();
-                PropertyInfo pathsProp = settingsObjType.GetProperty("CertificateSearchPaths", BindingFlags.Instance | BindingFlags.NonPublic);
-                pathsProp.SetValue(defSettings, new string[] { "@pem:certs", "@trusted" }, null);
-            } catch (Exception ex) {
-                Logger.LogError("Changing SSL/TLS certificates folder", ex);
-            }
-#endif
         }
     }
 
@@ -202,45 +181,13 @@ namespace MCLawl
 
         static void HACK_Execvp()
         {
-            // With using normal Process.Start with mono, after Environment.Exit
-            //  is called, all FDs (including standard input) are also closed.
-            // Unfortunately, this causes the new server process to constantly error with
-            //   Type: IOException
-            //   Message: Invalid handle to path "server_folder_path/[Unknown]"
-            //   Trace:   at System.IO.FileStream.ReadData (System.Runtime.InteropServices.SafeHandle safeHandle, System.Byte[] buf, System.Int32 offset, System.Int32 count) [0x0002d]
-            //     at System.IO.FileStream.ReadInternal (System.Byte[] dest, System.Int32 offset, System.Int32 count) [0x00026]
-            //     at System.IO.FileStream.Read (System.Byte[] array, System.Int32 offset, System.Int32 count) [0x000a1] 
-            //     at System.IO.StreamReader.ReadBuffer () [0x000b3]
-            //     at System.IO.StreamReader.Read () [0x00028]
-            //     at System.TermInfoDriver.GetCursorPosition () [0x0000d]
-            //     at System.TermInfoDriver.ReadUntilConditionInternal (System.Boolean haltOnNewLine) [0x0000e]
-            //     at System.TermInfoDriver.ReadLine () [0x00000]
-            //     at System.ConsoleDriver.ReadLine () [0x00000]
-            //     at System.Console.ReadLine () [0x00013]
-            //     at MCGalaxy.Cli.CLI.ConsoleLoop () [0x00002]
-            // (this errors multiple times a second and can quickly fill up tons of disk space)
-            // And also causes console to be spammed with '1R3;1R3;1R3;' or '363;1R;363;1R;'
-            //
-            // Note this issue does NOT happen with GUI mode for some reason - and also
-            // don't want to use excevp in GUI mode, otherwise the X socket FDs pile up
-            //
-            //
-            // a similar issue occurs with dotnet, but errors with this instead
-            //  "IOException with 'I/O error' message
-            //     ...
-            //     at System.IO.StdInReader.ReadKey()
-
-            // try to exec using actual runtime path first
-            //   e.g. /usr/bin/mono-sgen, /home/test/.dotnet/dotnet
             string exe = Process.GetCurrentProcess().MainModule.FileName;
             execvp(exe, new string[] { exe, Server.RestartPath, null });
             Console.WriteLine("execvp {0} failed: {1}", exe, Marshal.GetLastWin32Error());
 
-#if !NETSTANDARD
             // .. and fallback to mono if that doesn't work for some reason
             execvp("mono", new string[] { "mono", Server.RestartPath, null });
             Console.WriteLine("execvp mono failed: {0}", Marshal.GetLastWin32Error());
-#endif
         }
     }
 }

@@ -42,7 +42,7 @@ namespace MCLawl
             }
             catch
             {
-                // in case user is running CLI with older MCGalaxy dll which lacked CLIMode field
+                // in case user is running CLI with older MCLawl dll which lacked CLIMode field
             }
             Server.RestartPath = Assembly.GetEntryAssembly().Location;
         }
@@ -58,7 +58,7 @@ namespace MCLawl
             {
                 using (WebClient client = HttpUtil.CreateWebClient())
                 {
-                    client.DownloadFile(Updater.BaseURL + file, file);
+                    client.DownloadFile(MCLawlUpdater.Updater.BaseURL + file, file);
                 }
                 if (File.Exists(file))
                 {
