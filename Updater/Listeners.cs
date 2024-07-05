@@ -112,7 +112,7 @@ namespace MCLawlUpdater
             }
         }
 
-        static readonly AsyncCallback acceptCallback = new(AcceptCallback);
+        static readonly AsyncCallback acceptCallback = new AsyncCallback(AcceptCallback);
         static void AcceptCallback(IAsyncResult result)
         {
             TcpListen listen = (TcpListen)result.AsyncState;
@@ -137,7 +137,7 @@ namespace MCLawlUpdater
             }
             catch (Exception ex)
             {
-                if (ex is not SocketException) Console.WriteLine(ex);
+                if (!(ex is SocketException)) Console.WriteLine(ex);
                 s?.Close();
             }
             listen.AcceptNextAsync();
